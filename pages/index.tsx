@@ -29,7 +29,6 @@ const useStyles = createStyles((theme) => ({
     position: 'relative',
     paddingTop: useViewportSize().height / 3,
     paddingBottom: rem(120),
-
     maxHeight: rem(500),
   },
 
@@ -334,7 +333,7 @@ const FirstContainer = forwardRef<HTMLDivElement>((props, ref) => {
 
           <Card shadow="md" radius="md" padding="lg" className={classes.testaustime}>
             <Group position="apart" styles={(theme) => ({ marginBottom: 5, marginTop: theme.spacing.sm })}>
-              <Text ff={theme.headings.fontFamily} weight={800} size={rem(30)}>
+              <Text ff={theme.headings.fontFamily} weight={900} size={rem(30)}>
                 <Text ff={theme.headings.fontFamily} component="a" href="https://testaustime.fi" inherit>
                   testaustime
                 </Text>{' '}
@@ -373,7 +372,7 @@ const FirstContainer = forwardRef<HTMLDivElement>((props, ref) => {
 
         <Card shadow="md" radius="md" padding="lg" className={classes.testaustime}>
           <Group position="apart" styles={(theme) => ({ marginBottom: 5, marginTop: theme.spacing.sm })}>
-            <Text ff={theme.headings.fontFamily} weight={800} size={rem(30)}>
+            <Text ff={theme.headings.fontFamily} weight={900} size={rem(30)}>
               <Text ff={theme.headings.fontFamily} component="a" href="https://testaustime.fi" inherit>
                 testaustime
               </Text>{' '}

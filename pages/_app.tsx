@@ -1,5 +1,11 @@
 import type { AppProps } from 'next/app';
 import '../styles/global.css';
+import { Source_Sans_Pro } from 'next/font/google';
+
+const SourceSansPro = Source_Sans_Pro({
+  subsets: ['latin'],
+  weight: ['600', '900'],
+});
 
 import { MantineProvider } from '@mantine/core';
 
@@ -23,7 +29,7 @@ function App({ Component, pageProps }: AppProps) {
         },
 
         headings: {
-          fontFamily: 'Source Sans Pro, Sans-Serif',
+          fontFamily: `${SourceSansPro}, Sans-Serif`,
         },
       }}
     >
