@@ -29,7 +29,7 @@ function App({ Component, pageProps }: AppProps) {
         },
 
         headings: {
-          fontFamily: `${SourceSansPro}, Sans-Serif`,
+          fontFamily: `${SourceSansPro.style.fontFamily}, Sans-Serif`,
         },
       }}
     >
