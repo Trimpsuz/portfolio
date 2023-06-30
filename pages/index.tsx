@@ -591,7 +591,7 @@ const Home: NextPage = () => {
             <Anchor href="https://github.com/trimpsuz">
               <Github size={25} color={theme.colors.primary[0]} />
             </Anchor>
-            <Anchor href="mailto:mail@trimpsuz.xyz">
+            <Anchor href="mailto:me@trimpsuz.dev">
               <Mail size={25} color={theme.colors.primary[0]} style={{ marginLeft: '25px' }} />
             </Anchor>
           </div>
