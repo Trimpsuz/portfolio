@@ -1,8 +1,8 @@
 import type { AppProps } from 'next/app';
 import '../styles/global.css';
-import { Source_Sans_Pro } from 'next/font/google';
+import { Source_Sans_3 } from 'next/font/google';
 
-const SourceSansPro = Source_Sans_Pro({
+const SourceSans3 = Source_Sans_3({
   subsets: ['latin'],
   weight: ['600', '900'],
 });
@@ -29,7 +29,7 @@ function App({ Component, pageProps }: AppProps) {
         },
 
         headings: {
-          fontFamily: `${SourceSansPro.style.fontFamily}, Sans-Serif`,
+          fontFamily: `${SourceSans3.style.fontFamily}, Sans-Serif`,
         },
       }}
     >
