@@ -384,7 +384,7 @@ const FirstContainer = forwardRef<HTMLDivElement>((props, ref) => {
           </h1>
 
           <Text className={classes.description} color="dimmed">
-            A {new Date().getFullYear() - 2006} year old high school student and software developer from Finland.
+            A {new Date().getFullYear() - 2006} year old software developer from Finland.
           </Text>
         </div>
 
@@ -407,6 +407,21 @@ const FirstContainer = forwardRef<HTMLDivElement>((props, ref) => {
 FirstContainer.displayName = 'FirstContainer';
 
 const projectsData = [
+  {
+    title: 'Testaustime wrapped',
+    description: 'Year review for testaustime.',
+    link: 'https://wrapped.testaustime.fi',
+  },
+  {
+    title: 'AniList WearOS',
+    description: 'AniList client for WearOS devices.',
+    link: 'https://github.com/Trimpsuz/anilist-wearos',
+  },
+  {
+    title: 'VertaaRauhassa',
+    description: 'Journey finder for Finnish trains with better filtering and sorting.',
+    link: 'https://vertaarauhassa.fi',
+  },
   {
     title: 'testaus.link',
     description: 'Quick and easy URL shortener.',
