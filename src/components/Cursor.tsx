@@ -35,16 +35,17 @@ export function Cursor() {
       const deactivate = () => {
         document.documentElement.dataset.cursorState = 'default';
       };
-      const closestInteractive = (target: EventTarget | null) => (target instanceof Element ? target.closest('a, button') : null);
+      const closestInteractive = (target: EventTarget | null) => (target instanceof Element ? target.closest('a, button, [data-cursor-interactive]') : null);
       const onPointerOver = (event: PointerEvent) => {
+        if (document.documentElement.dataset.cursorLocked) return;
         if (closestInteractive(event.target)) activate();
       };
       const onPointerOut = (event: PointerEvent) => {
+        if (document.documentElement.dataset.cursorLocked) return;
         const from = closestInteractive(event.target);
         const to = closestInteractive(event.relatedTarget);
         if (from && from !== to) deactivate();
       };
-
       const onPointerLeave = (event: PointerEvent) => {
         if (event.relatedTarget === null) {
           document.documentElement.dataset.cursorState = 'hidden';
@@ -56,14 +57,14 @@ export function Cursor() {
         }
       };
 
-      window.addEventListener('mousemove', move);
+      window.addEventListener('pointermove', move);
       document.addEventListener('pointerover', onPointerOver);
       document.addEventListener('pointerout', onPointerOut);
       document.documentElement.addEventListener('pointerleave', onPointerLeave);
       document.documentElement.addEventListener('pointerenter', onPointerEnter);
 
       return () => {
-        window.removeEventListener('mousemove', move);
+        window.removeEventListener('pointermove', move);
         document.removeEventListener('pointerover', onPointerOver);
         document.removeEventListener('pointerout', onPointerOut);
         document.documentElement.removeEventListener('pointerleave', onPointerLeave);

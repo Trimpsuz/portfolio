@@ -116,8 +116,8 @@ a {
 
 .theme-toggle {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
   z-index: 50;
   display: inline-grid;
   width: 2.75rem;
@@ -657,6 +657,51 @@ html[data-cursor-state='hidden'] .cursor {
   font-size: 0.75rem;
 }
 
+.scrollbar-track {
+  position: fixed;
+  right: 0.5rem;
+  z-index: 90;
+  width: 1.25rem;
+  cursor: none;
+}
+
+.scrollbar-track::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: var(--border);
+  opacity: 0.7;
+  transform: translateX(-50%);
+}
+
+.scrollbar-thumb {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-left: -0.375rem;
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+  background: var(--bg);
+  cursor: none;
+  transition:
+    width 140ms ease,
+    height 140ms ease,
+    margin-left 140ms ease,
+    border-color 140ms ease;
+}
+
+.scrollbar-thumb:hover,
+.scrollbar-thumb[data-dragging] {
+  width: 1rem;
+  height: 1rem;
+  margin-left: -0.5rem;
+}
+
 @media (max-width: 768px) {
   .projects-section {
     padding: 5rem 0;
@@ -672,6 +717,11 @@ html[data-cursor-state='hidden'] .cursor {
   .activity__content {
     grid-template-columns: 1fr;
   }
+
+  .theme-toggle {
+    left: auto;
+    right: 1rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -683,6 +733,10 @@ html[data-cursor-state='hidden'] .cursor {
     background: var(--accent);
     transition: none;
   }
+
+  .scrollbar-thumb {
+    transition: none;
+  }
 }
 
 @media (hover: none) {
@@ -690,7 +744,8 @@ html[data-cursor-state='hidden'] .cursor {
     cursor: auto;
   }
 
-  .cursor {
+  .cursor,
+  .scrollbar-track {
     display: none;
   }
 }
