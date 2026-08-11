@@ -14,6 +14,7 @@
   --surface: #fffefa;
   --surface-subtle: #f0eee7;
   --focus-ring: rgba(224, 31, 168, 0.42);
+  --bg-dot: rgb(26 26 24 / 0.09);
   --font-heading: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
   color-scheme: light;
@@ -31,6 +32,7 @@
   --border: #33312e;
   --surface: #201f1d;
   --surface-subtle: #252421;
+  --bg-dot: rgb(240 238 233 / 0.085);
   color-scheme: dark;
 }
 
@@ -47,6 +49,16 @@ html::-webkit-scrollbar {
 #root,
 main {
   min-height: 100svh;
+}
+
+#root {
+  position: relative;
+  isolation: isolate;
+}
+
+main {
+  position: relative;
+  z-index: 1;
 }
 
 body {
@@ -476,6 +488,12 @@ html[data-cursor-state='hidden'] .cursor {
   line-height: 0.8;
 }
 
+.hero__tagline-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
 .hero__tagline {
   max-width: 39rem;
   padding-top: 1.25rem;
@@ -508,6 +526,104 @@ html[data-cursor-state='hidden'] .cursor {
   border-color: var(--accent);
   background: var(--surface-subtle);
   transform: translateY(-2px);
+}
+
+.hero__time {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  padding: 0;
+  background: transparent;
+  color: var(--fg-muted);
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+}
+
+.hero__time time {
+  color: var(--fg);
+}
+
+.hero__time-difference {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  color: var(--fg-muted);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.hero__time-tooltip {
+  position: absolute;
+  z-index: 2;
+  bottom: calc(100% + 0.65rem);
+  left: 0;
+  width: max-content;
+  max-width: min(16rem, calc(100vw - 2rem));
+  border: 1px solid var(--border);
+  border-radius: 0.2rem;
+  background: var(--surface);
+  box-shadow: 0 0.65rem 1.75rem rgb(26 26 24 / 0.08);
+  color: var(--fg-muted);
+  padding: 0.35rem;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.4;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0.2rem);
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease;
+}
+
+.hero__time:focus-visible .hero__time-tooltip,
+.hero__time[data-open] .hero__time-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.background {
+  --bg-field-x: 0px;
+  --bg-field-y: 0px;
+  --bg-grain-y: 0px;
+  position: fixed;
+  z-index: -999;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.background__field,
+.background__grain {
+  position: absolute;
+  pointer-events: none;
+}
+
+.background__field {
+  inset: -10%;
+  background-image: radial-gradient(circle, var(--bg-dot) 0.7px, transparent 0.8px);
+  background-size: 1.85rem 1.85rem;
+  opacity: 0.65;
+  transform: translate3d(var(--bg-field-x), var(--bg-field-y), 0);
+  will-change: transform;
+}
+
+.background__grain {
+  inset: -2rem;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+  opacity: 0.045;
+  transform: translate3d(0, var(--bg-grain-y), 0);
+  will-change: transform;
 }
 
 .activity {
@@ -714,6 +830,11 @@ html[data-cursor-state='hidden'] .cursor {
     justify-content: center;
   }
 
+  .background__field {
+    inset: -6%;
+    background-size: 1.6rem 1.6rem;
+  }
+
   .activity__content {
     grid-template-columns: 1fr;
   }
@@ -737,6 +858,10 @@ html[data-cursor-state='hidden'] .cursor {
   .scrollbar-thumb {
     transition: none;
   }
+
+  .background__field {
+    transform: none;
+  }
 }
 
 @media (hover: none) {
@@ -747,5 +872,12 @@ html[data-cursor-state='hidden'] .cursor {
   .cursor,
   .scrollbar-track {
     display: none;
+  }
+}
+
+@media (hover: hover) {
+  .hero__time:hover .hero__time-tooltip {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

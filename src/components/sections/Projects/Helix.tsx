@@ -163,10 +163,6 @@ export function Helix() {
     let idleSpeedFactor = 1;
 
     const frame = (now: number) => {
-      const vh = window.innerHeight;
-      const innerFadeLimit = 0.48 * vh;
-      const outerFadeLimit = 0.68 * vh;
-
       const dt = Math.min(0.1, Math.max(0, (now - lastTime) / 1000));
       lastTime = now;
 
@@ -181,15 +177,8 @@ export function Helix() {
         const y = (progress - 0.5) * viewport.span;
         const scale = card.active ? 1.08 : 1;
 
-        const absY = Math.abs(y);
-        let cardOpacity = 1;
-        if (absY > innerFadeLimit) {
-          cardOpacity = Math.max(0, Math.min(1, (outerFadeLimit - absY) / (outerFadeLimit - innerFadeLimit)));
-        }
-
         card.el.style.transform = helixTransform(angle, y, viewport.radius, scale, CARD_SCALE);
         card.el.style.filter = depthFilter(card.active ? 1 : depth);
-        card.el.style.opacity = cardOpacity.toFixed(3);
       });
       frameId = requestAnimationFrame(frame);
     };
@@ -210,20 +199,22 @@ export function Helix() {
         <p className="section-heading__eyebrow">Featured</p>
         <h2 id="projects-heading">Projects</h2>
       </div>
-      <div className="helix-stage">
-        <div className="helix-world">
-          {helixCards.map(({ instanceId, ...project }) => {
-            return (
-              <ProjectCard
-                className="helix-card"
-                key={instanceId}
-                ref={(element) => {
-                  cardRefs.current[instanceId] = element;
-                }}
-                {...project}
-              />
-            );
-          })}
+      <div className="helix-fade">
+        <div className="helix-stage">
+          <div className="helix-world">
+            {helixCards.map(({ instanceId, ...project }) => {
+              return (
+                <ProjectCard
+                  className="helix-card"
+                  key={instanceId}
+                  ref={(element) => {
+                    cardRefs.current[instanceId] = element;
+                  }}
+                  {...project}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

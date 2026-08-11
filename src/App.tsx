@@ -6,6 +6,7 @@ import { HelixCardList } from './components/sections/Projects/HelixCardList';
 import { ThemeToggle } from './components/ThemeToggle';
 import { Cursor } from './components/Cursor';
 import { Scrollbar } from './components/Scrollbar';
+import { Background } from './components/Background';
 import { initLenis } from './lib/lenis';
 
 const DesktopHelix = lazy(() => import('./components/sections/Projects/Helix').then(({ Helix }) => ({ default: Helix })));
@@ -55,6 +56,7 @@ function App() {
 
   return (
     <>
+      <Background />
       <Cursor />
       <ThemeToggle />
       <Scrollbar />

@@ -2,6 +2,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { Code2, Mail } from 'lucide-react';
 import { useRef } from 'react';
+import { LocalTime } from '../LocalTime';
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -29,9 +30,10 @@ export function Hero() {
         <h1 id="hero-heading" data-hero-reveal>
           trimpsuz
         </h1>
-        <p className="hero__tagline" data-hero-reveal>
-          A {age} year old software developer from Finland.
-        </p>
+        <div className="hero__tagline-container" data-hero-reveal>
+          <p className="hero__tagline">A {age} year old software developer from Finland.</p>
+          <LocalTime />
+        </div>
         <div className="hero__links" data-hero-reveal aria-label="Primary links">
           <a href="https://github.com/Trimpsuz" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
             <Code2 aria-hidden="true" size={20} />

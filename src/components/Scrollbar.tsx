@@ -1,6 +1,7 @@
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useCallback, useRef, useState } from 'react';
+import { getLenis, subscribeToLenis } from '../lib/lenis';
 
 const pointerQuery = '(hover: hover) and (pointer: fine)';
 const reducedMotionQuery = '(prefers-reduced-motion: reduce)';
@@ -15,10 +16,6 @@ function getDocMetrics() {
     scrollHeight: doc.scrollHeight,
     clientHeight: doc.clientHeight,
   };
-}
-
-function getLenis() {
-  return window.__lenis;
 }
 
 export function Scrollbar() {
@@ -45,34 +42,50 @@ export function Scrollbar() {
         if (!reduced) gsap.getTweensOf(thumb).forEach((tween) => tween.progress(1));
       };
 
-      const render = () => {
+      const render = (scrollTop: number, maxScrollTop: number) => {
         if (draggingRef.current) return;
-        const { scrollTop, scrollHeight, clientHeight } = getDocMetrics();
 
-        if (scrollHeight <= clientHeight) {
+        if (maxScrollTop <= 0) {
           gsap.set(track, { autoAlpha: 0 });
           return;
         }
         gsap.set(track, { autoAlpha: 1 });
 
-        const maxScrollTop = scrollHeight - clientHeight;
         const maxThumbY = track.clientHeight - THUMB_SIZE;
         const progress = maxScrollTop > 0 ? scrollTop / maxScrollTop : 0;
         setY(progress * maxThumbY);
       };
 
-      const onScroll = () => render();
-      const onResize = () => render();
+      const renderFromDocument = () => {
+        const { scrollTop, scrollHeight, clientHeight } = getDocMetrics();
+        render(scrollTop, scrollHeight - clientHeight);
+      };
+      const renderCurrent = () => {
+        const lenis = getLenis();
+        if (lenis) render(lenis.scroll, lenis.limit);
+        else renderFromDocument();
+      };
+      const onFallbackScroll = () => {
+        if (!getLenis()) renderFromDocument();
+      };
+      let resizeFrame = 0;
+      const onResize = () => {
+        window.cancelAnimationFrame(resizeFrame);
+        resizeFrame = window.requestAnimationFrame(renderCurrent);
+      };
+      const detachLenis = subscribeToLenis(({ scroll, limit }) => render(scroll, limit));
 
-      render();
-      window.addEventListener('scroll', onScroll, { passive: true });
+      renderCurrent();
+      window.addEventListener('scroll', onFallbackScroll, { passive: true });
       window.addEventListener('resize', onResize);
 
       const ro = new ResizeObserver(onResize);
       ro.observe(document.documentElement);
 
       return () => {
-        window.removeEventListener('scroll', onScroll);
+        window.cancelAnimationFrame(resizeFrame);
+        detachLenis();
+        window.removeEventListener('scroll', onFallbackScroll);
         window.removeEventListener('resize', onResize);
         ro.disconnect();
         setThumbYRef.current = null;
@@ -94,10 +107,11 @@ export function Scrollbar() {
     setThumbYRef.current?.(clampedY);
 
     const progress = maxThumbY > 0 ? clampedY / maxThumbY : 0;
-    const { scrollHeight, clientHeight } = getDocMetrics();
-    const target = progress * (scrollHeight - clientHeight);
-
     const lenis = getLenis();
+    const { scrollHeight, clientHeight } = getDocMetrics();
+    const limit = lenis?.limit ?? scrollHeight - clientHeight;
+    const target = progress * limit;
+
     if (lenis) lenis.scrollTo(target, { immediate: true });
     else window.scrollTo({ top: target });
   }, []);
