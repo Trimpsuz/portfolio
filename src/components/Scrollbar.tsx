@@ -47,13 +47,21 @@ export function Scrollbar() {
 
         if (maxScrollTop <= 0) {
           gsap.set(track, { autoAlpha: 0 });
+          thumb.setAttribute('aria-valuenow', '0');
+          thumb.setAttribute('aria-valuemax', '0');
           return;
         }
+
         gsap.set(track, { autoAlpha: 1 });
 
         const maxThumbY = track.clientHeight - THUMB_SIZE;
-        const progress = maxScrollTop > 0 ? scrollTop / maxScrollTop : 0;
+        const progress = scrollTop / maxScrollTop;
+
         setY(progress * maxThumbY);
+
+        thumb.setAttribute('aria-valuemin', '0');
+        thumb.setAttribute('aria-valuemax', String(maxScrollTop));
+        thumb.setAttribute('aria-valuenow', String(scrollTop));
       };
 
       const renderFromDocument = () => {
@@ -111,6 +119,8 @@ export function Scrollbar() {
     const { scrollHeight, clientHeight } = getDocMetrics();
     const limit = lenis?.limit ?? scrollHeight - clientHeight;
     const target = progress * limit;
+
+    thumb.setAttribute('aria-valuenow', String(target));
 
     if (lenis) lenis.scrollTo(target, { immediate: true });
     else window.scrollTo({ top: target });
@@ -179,6 +189,9 @@ export function Scrollbar() {
         role="scrollbar"
         aria-orientation="vertical"
         aria-controls="root"
+        aria-valuemin={0}
+        aria-valuemax={0}
+        aria-valuenow={0}
       />
     </div>
   );
