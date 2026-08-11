@@ -96,4 +96,20 @@ export const projects: Project[] = [
     url: 'https://github.com/Trimpsuz/tjbar',
     year: 2026,
   },
+  {
+    id: 'no-wasting-rockets',
+    title: 'No Wasting Rockets',
+    description: 'Fabric mod to prevent wasting firework rockets',
+    languages: ['Kotlin'],
+    url: 'https://github.com/Trimpsuz/no-wasting-rockets',
+    year: 2024,
+  },
+  {
+    id: 'msc-coolerbox',
+    title: 'MSC Cooler Box',
+    description: 'Cooler Boxes mod for My Summer Car',
+    languages: ['C#'],
+    url: 'https://github.com/trimpsuz/msc-coolerbox',
+    year: 2024,
+  },
 ];
